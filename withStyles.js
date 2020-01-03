@@ -2,17 +2,124 @@ const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
 const findUp = require("find-up")
 const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin")
 
+module.exports = (nextConfig = {}) => {
+  return Object.assign({}, nextConfig, {
+    webpack(config, options) {
+      if (!options.defaultLoaders) {
+        throw new Error(
+          "This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade"
+        )
+      }
+
+      const { dev, isServer } = options
+      const {
+        sass,
+        modules,
+        sassLoaderOptions,
+        postcssLoaderOptions,
+      } = nextConfig
+
+      const issuer = issuer => {
+        if (issuer.match(/pages[\\/]_document\.js$/)) {
+          throw new Error(
+            "You can not import CSS/SASS/SCSS files in pages/_document.js, use pages/_app.js instead."
+          )
+        }
+        return true
+      }
+
+      const cssModules =
+        typeof modules === "object"
+          ? modules
+          : !!modules && {
+              localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
+            }
+
+      options.defaultLoaders.css = getStyleLoaders(config, {
+        extensions: ["css"],
+        postcssLoaderOptions,
+        dev,
+        isServer,
+      })
+      config.module.rules.push({
+        issuer,
+        test: /\.css$/,
+        exclude: /\.m\.css$/,
+        use: options.defaultLoaders.css,
+      })
+
+      if (cssModules) {
+        options.defaultLoaders.cssModules = getStyleLoaders(config, {
+          extensions: ["css"],
+          cssModules,
+          postcssLoaderOptions,
+          dev,
+          isServer,
+        })
+        config.module.rules.push({
+          issuer,
+          test: /\.m\.css$/,
+          use: options.defaultLoaders.cssModules,
+        })
+      }
+
+      const sassLoader = {
+        loader: "sass-loader",
+        options: sassLoaderOptions,
+      }
+
+      if (sass) {
+        options.defaultLoaders.sass = getStyleLoaders(config, {
+          extensions: ["scss", "sass"],
+          loaders: [sassLoader],
+          postcssLoaderOptions,
+          dev,
+          isServer,
+        })
+        config.module.rules.push({
+          issuer,
+          test: /\.scss$/,
+          exclude: /\.m\.scss$/,
+          use: options.defaultLoaders.sass,
+        })
+      }
+
+      if (sass && cssModules) {
+        console.log("sass & modules")
+        options.defaultLoaders.sassModules = getStyleLoaders(config, {
+          extensions: ["scss", "sass"],
+          loaders: [sassLoader],
+          cssModules,
+          postcssLoaderOptions,
+          dev,
+          isServer,
+        })
+        config.module.rules.push({
+          issuer,
+          test: /\.m\.scss$/,
+          use: options.defaultLoaders.sassModules,
+        })
+      }
+
+      if (typeof nextConfig.webpack === "function") {
+        return nextConfig.webpack(config, options)
+      }
+
+      return config
+    },
+  })
+}
+
 const fileExtensions = new Set()
 let extractCssInitialized = false
 
 const getStyleLoaders = (
   config,
   {
-    extensions = [],
-    cssModules = false,
-    cssLoaderOptions = {},
     dev,
     isServer,
+    cssModules,
+    extensions = [],
     postcssLoaderOptions = {},
     loaders = [],
   }
@@ -66,15 +173,12 @@ const getStyleLoaders = (
 
   const cssLoader = {
     loader: "css-loader",
-    options: Object.assign(
-      {},
-      {
-        sourceMap: dev,
-        importLoaders: loaders.length + (postcssLoader ? 1 : 0),
-        onlyLocals: isServer,
-      },
-      cssLoaderOptions
-    ),
+    options: {
+      sourceMap: dev,
+      importLoaders: loaders.length + (postcssLoader ? 1 : 0),
+      onlyLocals: isServer,
+      modules: cssModules,
+    },
   }
 
   // When not using css modules we don't transpile on the server
@@ -96,7 +200,6 @@ const getStyleLoaders = (
 }
 
 function getPostcssLoader(config, postcssLoaderOptions) {
-  let postcssLoader
   const postcssConfigPath = findUp.sync("postcss.config.js", {
     cwd: config.context,
   })
@@ -107,120 +210,13 @@ function getPostcssLoader(config, postcssLoaderOptions) {
       postcssLoaderOptions.config,
       { path: postcssConfigPath }
     )
-    postcssLoader = {
+    return {
       loader: "postcss-loader",
       options: Object.assign({}, postcssLoaderOptions, {
         config: postcssOptionsConfig,
       }),
     }
   }
-  return postcssLoader
-}
 
-module.exports = (nextConfig = {}) => {
-  return Object.assign({}, nextConfig, {
-    webpack(config, options) {
-      if (!options.defaultLoaders) {
-        throw new Error(
-          "This plugin is not compatible with Next.js versions below 5.0.0 https://err.sh/next-plugins/upgrade"
-        )
-      }
-
-      const { dev, isServer } = options
-      const {
-        cssModules,
-        sass,
-        sassLoaderOptions,
-        cssLoaderOptions,
-        postcssLoaderOptions,
-      } = nextConfig
-
-      const issuer = issuer => {
-        if (issuer.match(/pages[\\/]_document\.js$/)) {
-          throw new Error(
-            "You can not import CSS/SASS/SCSS files in pages/_document.js, use pages/_app.js instead."
-          )
-        }
-        return true
-      }
-
-      options.defaultLoaders.css = getStyleLoaders(config, {
-        extensions: ["css"],
-        cssLoaderOptions,
-        postcssLoaderOptions,
-        dev,
-        isServer,
-      })
-      config.module.rules.push({
-        issuer,
-        test: /\.css$/,
-        exclude: /\.m\.css$/,
-        use: options.defaultLoaders.css,
-      })
-
-      if (cssModules) {
-        options.defaultLoaders.cssModules = getStyleLoaders(config, {
-          extensions: ["css"],
-          cssModules: {
-            localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
-          },
-          cssLoaderOptions,
-          postcssLoaderOptions,
-          dev,
-          isServer,
-        })
-        config.module.rules.push({
-          issuer,
-          test: /\.m\.css$/,
-          use: options.defaultLoaders.cssModules,
-        })
-      }
-
-      if (sass) {
-        options.defaultLoaders.sass = getStyleLoaders(config, {
-          extensions: ["scss", "sass"],
-          cssLoaderOptions,
-          postcssLoaderOptions,
-          dev,
-          isServer,
-          loaders: [
-            {
-              loader: "sass-loader",
-              options: sassLoaderOptions,
-            },
-          ],
-        })
-        config.module.rules.push({
-          issuer,
-          test: /\.scss$/,
-          exclude: /\.m\.scss$/,
-          use: options.defaultLoaders.sass,
-        })
-
-        if (cssModules) {
-          options.defaultLoaders.sassModules = getStyleLoaders(config, {
-            extensions: ["scss", "sass"],
-            cssModules: {
-              localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
-            },
-            cssLoaderOptions,
-            postcssLoaderOptions,
-            dev,
-            isServer,
-          })
-          config.module.rules.push({
-            issuer,
-            test: /\.m\.s[ac]ss$/,
-            use: options.defaultLoaders.sassModules,
-          })
-        }
-      }
-
-      if (typeof nextConfig.webpack === "function") {
-        return nextConfig.webpack(config, options)
-      }
-
-      return config
-    },
-  })
+  return null
 }

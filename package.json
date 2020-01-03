@@ -1,7 +1,7 @@
 {
   "name": "next-styles",
   "version": "1.0.0",
-  "description": "Enable CSS / SASS / CssModules in Next.js",
+  "description": "CSS / SASS / CssModules in Next.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,13 +16,14 @@
   "author": "Boris Kotov <bk@webdeb.de> (http://www.webdeb.de/)",
   "license": "MIT",
   "dependencies": {
-    "find-up": "^4.1.0",
     "css-loader": "^3.4.0",
-    "sass-loader": "^8.0.0",
-    "postcss-loader": "^3.0.0",
     "extract-css-chunks-webpack-plugin": "^4.7.1",
+    "find-up": "^4.1.0",
     "ignore-loader": "~0.1.2",
-    "optimize-css-assets-webpack-plugin": "^5.0.3"
+    "node-sass": "^4.13.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0"
   },
   "devDependencies": {
     "webpack": "^4.29.5"
