@@ -17,7 +17,7 @@ So I created this one. It has everything I need for my project, most projects, I
 ## Install
 
 ```sh
-npm i @webdeb/next-styles
+npm install @webdeb/next-styles
 ```
 
 ## Use
