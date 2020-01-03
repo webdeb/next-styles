@@ -85,7 +85,6 @@ module.exports = (nextConfig = {}) => {
       }
 
       if (sass && cssModules) {
-        console.log("sass & modules")
         options.defaultLoaders.sassModules = getStyleLoaders(config, {
           extensions: ["scss", "sass"],
           loaders: [sassLoader],
