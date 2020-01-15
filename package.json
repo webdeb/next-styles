@@ -1,6 +1,6 @@
 {
   "name": "next-styles",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CSS / SASS / CssModules in Next.js",
   "main": "index.js",
   "scripts": {
