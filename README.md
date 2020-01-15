@@ -34,6 +34,7 @@ module.exports = withStyles({
       includePaths: ["src/styles"], // @import 'variables'; # loads (src/styles/varialbes.scss), you got it..
     },
   },
+  cssLoaderOptions: {...},
   postcssLoaderOptions: {...}
 })
 ```

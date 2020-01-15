@@ -16,6 +16,7 @@ module.exports = (nextConfig = {}) => {
         sass,
         modules,
         sassLoaderOptions,
+        cssLoaderOptions,
         postcssLoaderOptions,
       } = nextConfig
 
@@ -37,6 +38,7 @@ module.exports = (nextConfig = {}) => {
 
       options.defaultLoaders.css = getStyleLoaders(config, {
         extensions: ["css"],
+        cssLoaderOptions,
         postcssLoaderOptions,
         dev,
         isServer,
@@ -52,6 +54,7 @@ module.exports = (nextConfig = {}) => {
         options.defaultLoaders.cssModules = getStyleLoaders(config, {
           extensions: ["css"],
           cssModules,
+          cssLoaderOptions,
           postcssLoaderOptions,
           dev,
           isServer,
@@ -72,6 +75,7 @@ module.exports = (nextConfig = {}) => {
         options.defaultLoaders.sass = getStyleLoaders(config, {
           extensions: ["scss", "sass"],
           loaders: [sassLoader],
+          cssLoaderOptions,
           postcssLoaderOptions,
           dev,
           isServer,
@@ -89,6 +93,7 @@ module.exports = (nextConfig = {}) => {
           extensions: ["scss", "sass"],
           loaders: [sassLoader],
           cssModules,
+          cssLoaderOptions,
           postcssLoaderOptions,
           dev,
           isServer,
@@ -120,6 +125,7 @@ const getStyleLoaders = (
     cssModules,
     extensions = [],
     postcssLoaderOptions = {},
+    cssLoaderOptions,
     loaders = [],
   }
 ) => {
@@ -177,6 +183,7 @@ const getStyleLoaders = (
       importLoaders: loaders.length + (postcssLoader ? 1 : 0),
       onlyLocals: isServer,
       modules: cssModules,
+      ...cssLoaderOptions,
     },
   }
 
