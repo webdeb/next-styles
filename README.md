@@ -1,6 +1,7 @@
 # @webdeb/next-styles
 
 ### CSS + SASS + Modules in Next.js
+
 ---
 
 ## Description
@@ -12,7 +13,6 @@ It uses the latest modules available css-loader, sass-loader, postcss. Check out
 
 Because I found it cumbersome to deal with the official packages from next-plugins to setup css + sass + modules.
 So I created this one. It has everything I need for my project, most projects, I believe.
-
 
 ## Install
 
@@ -28,7 +28,7 @@ const withStyles = require('@webdeb/next-styles')
 
 module.exports = withStyles({
   sass: true, // use .scss files
-  modules: true, // style.m.css & style.m.scss for module files
+  modules: true, // style.(m|module).css & style.(m|module).scss for module files
   sassLoaderOptions: {
     sassOptions: {
       includePaths: ["src/styles"], // @import 'variables'; # loads (src/styles/varialbes.scss), you got it..
@@ -43,4 +43,3 @@ _Hint: Look at the source of truth: `withStyles.js`_
 ## Credits
 
 Most of the code was taken from official `next-css` / `next-sass` packages, so thanks MIT Community!
-
