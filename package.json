@@ -1,6 +1,6 @@
 {
   "name": "@webdeb/next-styles",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CSS / SASS / CssModules in Next.js",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,8 @@
     "SCSS",
     "Styles"
   ],
+  "repository": "webdeb/next-styles",
+  "bugs": "https://github.com/webdeb/next-styles/issues",
   "author": "Boris Kotov <bk@webdeb.de> (http://www.webdeb.de/)",
   "license": "MIT",
   "dependencies": {
