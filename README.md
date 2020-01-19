@@ -41,6 +41,20 @@ module.exports = withStyles({
 
 _Hint: Look at the source of truth: `withStyles.js`_
 
+## Known Issues
+
+This project inherits a known next-css problem. https://github.com/zeit/next-plugins/issues/282
+
+If your pages where you are importing css are not working, you are probably facing exactly this problem. The workaround is to load a css/scss file (can be even empty) into your \_app.js.
+
+```js
+import "../styles/global.scss"
+
+export default function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+```
+
 ## Credits
 
-Most of the code was taken from official `next-css` / `next-sass` packages, so thanks MIT Community!
+Most of the code was taken from the official `next-css` & `next-sass` package.
