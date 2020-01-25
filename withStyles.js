@@ -1,5 +1,5 @@
-const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
 const findUp = require("find-up")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin")
 
 module.exports = (nextConfig = {}) => {
@@ -145,7 +145,7 @@ const getStyleLoaders = (
 
   if (!isServer && !extractCssInitialized) {
     config.plugins.push(
-      new ExtractCssChunks({
+      new MiniCssExtractPlugin({
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         filename: dev
@@ -177,7 +177,7 @@ const getStyleLoaders = (
   const postcssLoader = getPostcssLoader(config, postcssLoaderOptions)
 
   const cssLoader = {
-    loader: "css-loader",
+    loader: 'css-loader',
     options: {
       sourceMap: dev,
       importLoaders: loaders.length + (postcssLoader ? 1 : 0),
@@ -198,7 +198,8 @@ const getStyleLoaders = (
   }
 
   return [
-    !isServer && ExtractCssChunks.loader,
+    !isServer && dev && 'extracted-loader',
+    !isServer && MiniCssExtractPlugin.loader,
     cssLoader,
     postcssLoader,
     ...loaders,

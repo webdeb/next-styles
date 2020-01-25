@@ -19,15 +19,16 @@
   "license": "MIT",
   "dependencies": {
     "css-loader": "^3.4.0",
-    "extract-css-chunks-webpack-plugin": "^4.7.1",
     "find-up": "^4.1.0",
     "ignore-loader": "~0.1.2",
+    "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.0"
   },
   "devDependencies": {
+    "extracted-loader": "^1.0.7",
     "webpack": "^4.29.5"
   }
 }
