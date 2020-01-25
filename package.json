@@ -18,6 +18,7 @@
   "author": "Boris Kotov <bk@webdeb.de> (http://www.webdeb.de/)",
   "license": "MIT",
   "dependencies": {
+    "extracted-loader": "^1.0.7",
     "css-loader": "^3.4.0",
     "find-up": "^4.1.0",
     "ignore-loader": "~0.1.2",
@@ -28,7 +29,6 @@
     "sass-loader": "^8.0.0"
   },
   "devDependencies": {
-    "extracted-loader": "^1.0.7",
     "webpack": "^4.29.5"
   }
 }
