@@ -82,8 +82,8 @@ module.exports = (nextConfig = {}) => {
         })
         config.module.rules.push({
           issuer,
-          test: /\.scss$/,
-          exclude: /\.(m|module)\.scss$/,
+          test: /\.s[ac]ss$/,
+          exclude: /\.(m|module)\.s[ac]ss$/,
           use: options.defaultLoaders.sass,
         })
       }
@@ -100,7 +100,7 @@ module.exports = (nextConfig = {}) => {
         })
         config.module.rules.push({
           issuer,
-          test: /\.(m|module)\.scss$/,
+          test: /\.(m|module)\.s[ac]ss$/,
           use: options.defaultLoaders.sassModules,
         })
       }
