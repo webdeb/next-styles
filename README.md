@@ -35,7 +35,8 @@ module.exports = withStyles({
     },
   },
   cssLoaderOptions: {...},
-  postcssLoaderOptions: {...}
+  postcssLoaderOptions: {...},
+  miniCssExtractOptions: {...} // ignoreOrder:true for https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250#issuecomment-544898772
 })
 ```
 
@@ -54,6 +55,18 @@ export default function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
 ```
+
+## How to contribute
+
+1. fork the project `~master`
+1. locally clone the project in your machine ( `git clone https/ssh github link to your fork` )
+1. create a new branch in your fork ( `git checkout -b your/branch/name` )
+1. run `npm install` in your local clone of the repo
+1. apply your code changes ( keep `CHANGELOG.md` and the `README.md` file up to date, also modify `package.json` `version` as fit!)
+1. run `npm pack` in your local clone of the repo
+1. test your changes against a next.js project that uses your local repo ( use `npm install --save path/to/local/repo/{version}.tgz` to test your locally changed code)
+1. if your code work as expected, remove the packed tgz file from the repo and commit to your fork
+1. create a PR to apply your fork in this repository
 
 ## Credits
 
