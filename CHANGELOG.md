@@ -1,4 +1,4 @@
-# version 1.0.6
+# version 1.0.7
 
 ## Changes:
   - can now specify miniCssExtractOptions configuration inside next.config.js
