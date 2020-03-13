@@ -18,6 +18,7 @@ module.exports = (nextConfig = {}) => {
         sassLoaderOptions,
         cssLoaderOptions,
         postcssLoaderOptions,
+        miniCssExtractOptions
       } = nextConfig
 
       const issuer = issuer => {
@@ -33,13 +34,14 @@ module.exports = (nextConfig = {}) => {
         typeof modules === "object"
           ? modules
           : !!modules && {
-              localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
-            }
+            localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
+          }
 
       options.defaultLoaders.css = getStyleLoaders(config, {
         extensions: ["css"],
         cssLoaderOptions,
         postcssLoaderOptions,
+        miniCssExtractOptions,
         dev,
         isServer,
       })
@@ -56,6 +58,7 @@ module.exports = (nextConfig = {}) => {
           cssModules,
           cssLoaderOptions,
           postcssLoaderOptions,
+          miniCssExtractOptions,
           dev,
           isServer,
         })
@@ -77,6 +80,7 @@ module.exports = (nextConfig = {}) => {
           loaders: [sassLoader],
           cssLoaderOptions,
           postcssLoaderOptions,
+          miniCssExtractOptions,
           dev,
           isServer,
         })
@@ -95,6 +99,7 @@ module.exports = (nextConfig = {}) => {
           cssModules,
           cssLoaderOptions,
           postcssLoaderOptions,
+          miniCssExtractOptions,
           dev,
           isServer,
         })
@@ -126,6 +131,7 @@ const getStyleLoaders = (
     extensions = [],
     postcssLoaderOptions = {},
     cssLoaderOptions,
+    miniCssExtractOptions,
     loaders = [],
   }
 ) => {
@@ -155,6 +161,7 @@ const getStyleLoaders = (
           ? "static/chunks/[name].chunk.css"
           : "static/chunks/[name].[contenthash:8].chunk.css",
         hot: dev,
+        ...miniCssExtractOptions
       })
     )
     extractCssInitialized = true
