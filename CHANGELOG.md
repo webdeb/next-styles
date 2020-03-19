@@ -1,3 +1,8 @@
+# version 1.0.8
+
+## Changes:
+  - fixed `npm audit` warnings
+
 # version 1.0.7
 
 ## Changes:
