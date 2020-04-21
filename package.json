@@ -1,7 +1,7 @@
 {
   "name": "@webdeb/next-styles",
-  "version": "1.0.8",
-  "description": "CSS / SASS / CssModules in Next.js",
+  "version": "1.0.9",
+  "description": "CSS / LESS / SASS / CssModules in Next.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,7 @@
   "keywords": [
     "Next.js",
     "CSS",
+    "LESS",
     "SASS",
     "SCSS",
     "Styles"
@@ -18,17 +19,19 @@
   "author": "Boris Kotov <bk@webdeb.de> (http://www.webdeb.de/)",
   "license": "MIT",
   "dependencies": {
-    "css-loader": "^3.4.0",
+    "css-loader": "^3.5.2",
     "extracted-loader": "^1.0.7",
     "find-up": "^4.1.0",
     "ignore-loader": "~0.1.2",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
-    "sass-loader": "^8.0.0"
+    "sass-loader": "^8.0.2"
   },
   "devDependencies": {
-    "webpack": "^4.29.5"
+    "webpack": "^4.42.1"
   }
 }

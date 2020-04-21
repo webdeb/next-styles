@@ -1,17 +1,17 @@
 # @webdeb/next-styles
 
-### CSS + SASS + Modules in Next.js
+### CSS + LESS + SASS + Modules in Next.js
 
 ---
 
 ## Description
 
-This module allows you to use css (+ optional [sass, modules]) all in one package.
-It uses the latest modules available css-loader, sass-loader, postcss. Check out the sources, its dead simple.
+This module allows you to use css (+ optional [less, sass, modules]) all in one package.
+It uses the latest modules available css-loader, less-loader, sass-loader, postcss. Check out the sources, its dead simple.
 
 ## Why?
 
-Because I found it cumbersome to deal with the official packages from next-plugins to setup css + sass + modules.
+Because I found it cumbersome to deal with the official packages from next-plugins to setup css + less + sass + modules.
 So I created this one. It has everything I need for my project, most projects, I believe.
 
 ## Install
@@ -27,8 +27,12 @@ npm install @webdeb/next-styles
 const withStyles = require('@webdeb/next-styles')
 
 module.exports = withStyles({
+  less: true, // use .less files
   sass: true, // use .scss files
   modules: true, // style.(m|module).css & style.(m|module).scss for module files
+  lessLoaderOptions: {
+    javascriptEnabled: true,
+  },
   sassLoaderOptions: {
     sassOptions: {
       includePaths: ["src/styles"], // @import 'variables'; # loads (src/styles/varialbes.scss), you got it..

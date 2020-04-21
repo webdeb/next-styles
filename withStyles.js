@@ -1,5 +1,5 @@
 const findUp = require("find-up")
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsWebpackPlugin = require("optimize-css-assets-webpack-plugin")
 
 module.exports = (nextConfig = {}) => {
@@ -13,15 +13,17 @@ module.exports = (nextConfig = {}) => {
 
       const { dev, isServer } = options
       const {
+        less,
         sass,
         modules,
+        lessLoaderOptions,
         sassLoaderOptions,
         cssLoaderOptions,
         postcssLoaderOptions,
-        miniCssExtractOptions
+        miniCssExtractOptions,
       } = nextConfig
 
-      const issuer = issuer => {
+      const issuer = (issuer) => {
         if (issuer.match(/pages[\\/]_document\.js$/)) {
           throw new Error(
             "You can not import CSS/SASS/SCSS files in pages/_document.js, use pages/_app.js instead."
@@ -34,8 +36,8 @@ module.exports = (nextConfig = {}) => {
         typeof modules === "object"
           ? modules
           : !!modules && {
-            localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
-          }
+              localIdentName: dev ? "[path][name]__[local]" : "[hash:base64:8]",
+            }
 
       options.defaultLoaders.css = getStyleLoaders(config, {
         extensions: ["css"],
@@ -110,6 +112,43 @@ module.exports = (nextConfig = {}) => {
         })
       }
 
+      const lessLoader = {
+        loader: "less-loader",
+        options: lessLoaderOptions,
+      }
+
+      const lessOpts = {
+        extensions: ["less"],
+        loaders: [lessLoader],
+        cssLoaderOptions,
+        postcssLoaderOptions,
+        miniCssExtractOptions,
+        dev,
+        isServer,
+      }
+
+      if (less) {
+        options.defaultLoaders.less = getStyleLoaders(config, lessOpts)
+        config.module.rules.push({
+          issuer,
+          test: /\.less$/,
+          exclude: /\.(m|module)\.less$/,
+          use: options.defaultLoaders.less,
+        })
+      }
+
+      if (less && cssModules) {
+        options.defaultLoaders.lessModules = getStyleLoaders(config, {
+          ...lessOpts,
+          cssModules,
+        })
+        config.module.rules.push({
+          issuer,
+          test: /\.(m|module)\.less$/,
+          use: options.defaultLoaders.lessModules,
+        })
+      }
+
       if (typeof nextConfig.webpack === "function") {
         return nextConfig.webpack(config, options)
       }
@@ -161,7 +200,7 @@ const getStyleLoaders = (
           ? "static/chunks/[name].chunk.css"
           : "static/chunks/[name].[contenthash:8].chunk.css",
         hot: dev,
-        ...miniCssExtractOptions
+        ...miniCssExtractOptions,
       })
     )
     extractCssInitialized = true
@@ -184,7 +223,7 @@ const getStyleLoaders = (
   const postcssLoader = getPostcssLoader(config, postcssLoaderOptions)
 
   const cssLoader = {
-    loader: 'css-loader',
+    loader: "css-loader",
     options: {
       sourceMap: dev,
       importLoaders: loaders.length + (postcssLoader ? 1 : 0),
@@ -205,7 +244,7 @@ const getStyleLoaders = (
   }
 
   return [
-    !isServer && dev && 'extracted-loader',
+    !isServer && dev && "extracted-loader",
     !isServer && MiniCssExtractPlugin.loader,
     cssLoader,
     postcssLoader,
