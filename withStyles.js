@@ -244,7 +244,7 @@ const getStyleLoaders = (
   }
 
   return [
-    !isServer && dev && "extracted-loader",
+    !isServer && dev && require.resolve("extracted-loader"),
     !isServer && MiniCssExtractPlugin.loader,
     cssLoader,
     postcssLoader,

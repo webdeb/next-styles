@@ -1,3 +1,10 @@
+# version 1.1.0
+
+## Changes:
+
+- Fixes #11 "Can't resolve 'extracted-loader'"
+- Bump version, because we've previously added less support, thx @grampelberg
+
 # version 1.0.9
 
 ## Changes:
