@@ -227,7 +227,6 @@ const getStyleLoaders = (
     options: {
       sourceMap: dev,
       importLoaders: loaders.length + (postcssLoader ? 1 : 0),
-      onlyLocals: isServer,
       modules: cssModules,
       ...cssLoaderOptions,
     },
