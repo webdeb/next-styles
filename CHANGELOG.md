@@ -1,3 +1,9 @@
+# version 1.1.1
+
+## Changes
+
+- Fixes #14 "did not match. Server: 'null' Client: 'className'"
+
 # version 1.1.0
 
 ## Changes:
